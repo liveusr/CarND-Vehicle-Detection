@@ -10,13 +10,13 @@ There are multiple color spaces, various HOG parameters to try with. Every combi
 
 To start with, there were total 6 different color spaces to consider - "RGB", "LUV", "HLS", "YUV", "HSV", "YCrCb". Every representation has its own pros and cons. Following image shows output of HOG applied on each color channel of different color spaces:
 
-_Car Image:_
+_HOG on different color spaces of Car Image:_
 ![alt text](writeup_data/hog_sample.png "hog_sample")
 
-_Non-car Image:_
+_HOG on different color spaces of Non-car Image:_
 ![alt text](writeup_data/hog_sample_noncar.png "hog_sample_noncar")
 
-As you can see in the above image, in "RGB" color space, all channel relatively shar same information, whereas H-channel of "HSV" and "HLS" is not really useful. Compared to them, "LUV", "YUV" and "YCrCb" could extract more information.
+As you can see in the above image, in "RGB" color space, all channel relatively share same information, whereas H-channel of "HSV" and "HLS" is not really useful. Compared to them, "LUV", "YUV" and "YCrCb" could extract more information.
 
 ### Selecting HOG Parameters
 
@@ -26,7 +26,7 @@ Important parameters in HOG are `orientation`, `pixel_per_cell` and `cell_per_bl
 
 ### Training a Classifier
 
-I used dataset provided by udacity. it has 8792 images of cars and 8968 images of non-cars. The dataset was randomly split into 80%-20% train and test dataset. Following image shows samples of both the car and non-car datasets:
+I used dataset provided by udacity. It has 8792 images of cars and 8968 images of non-cars. The dataset was randomly split into 80%-20% train and test dataset. Following image shows samples of both the car and non-car datasets:
 
 _Car Image Samples:_
 ![alt text](writeup_data/dataset_sample_car.png "dataset_sample_car")
@@ -34,7 +34,7 @@ _Car Image Samples:_
 _Non-car Image Samples:_
 ![alt text](writeup_data/dataset_sample_noncar.png "dataset_sample_noncar")
 
-Once images from dataset are read, features of each image are extracted appended to feature list. Function `extract_features()` extracts the features of all images in dataset and return a big list containing them. These features are then normalized using `StandardScaler()`. I trained linear SVM using extracted features. I decided to use only HOG features with "YUV" and "YCrCb" to experiment with since both the color spaces extract relatively more useful HOG features as compared to other color spaces. Following table summarizes output of various training tests performed:
+Once images from dataset are read, features of each image are extracted and appended to feature list. Function `extract_features()` extracts the features of all images in dataset and return a big list containing them. These features are then normalized using `StandardScaler()`. I trained linear SVM using extracted features. I decided to use only HOG features with "YUV" and "YCrCb" to experiment with since both the color spaces extract relatively more useful HOG features as compared to other color spaces. Following table summarizes output of various training tests performed:
 
 | colorspace | channel | orient | pix/cell | cell/block | time-extract | num-features | time-train | train-accuracy | test-accuracy |
 |:-----------|:--------|:-------|:---------|:-----------|:-------------|:-------------|:-----------|:---------------|:--------------|
@@ -89,7 +89,6 @@ Removing false positives and multiple detections was the most difficult part. I 
 
 Once the pipeline was tried on the test images, it war run through the video. After running the video, I noticed even more false positives. So, to handle this I kept track of past 10 frames and their detections. This past data was also used to calculate heatmap. Once frame is aged it was discarded. This helped smoother the detections. Following GIF shows snippet from the output video:
 
-!!! final video gif
 ![alt text](writeup_data/output_video.gif "output_video")
 
 Since image data doesn't change from frame to frame, alternate frames were used for predictions. This helped improve performance and smoothen the search output.
